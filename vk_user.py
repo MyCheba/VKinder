@@ -35,7 +35,6 @@ class VKUser:
                     break
                 else:
                     time.sleep(1)  # если блокировка по частоте запросов и нет ответа
-        print("Данные пользователя", user_info)
         return user_info
 
     def get_city_id(self, city):  # получаем id города по названию

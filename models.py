@@ -5,7 +5,7 @@ Base = declarative_base()
 
 
 class Users(Base):
-    __tablename__ = "users"  # список пользователей сообщества
+    __tablename__ = "users"  # пользователи
 
     id = sq.Column(sq.Integer, primary_key=True)
     bdate = sq.Column(sq.Integer)
@@ -16,21 +16,7 @@ class Users(Base):
     city_name = sq.Column(sq.String)
 
 
-class Params(Base):  # параметры поиска для каждого пользователя сообщества
-    __tablename__ = "params"
-
-    param_id = sq.Column(sq.Integer, primary_key=True)
-    sex = sq.Column(sq.Integer)
-    age_from = sq.Column(sq.Integer)
-    age_to = sq.Column(sq.Integer)
-    city_id = sq.Column(sq.Integer)
-
-    user_id = sq.Column(sq.Integer, sq.ForeignKey("users.id"), nullable=False)
-
-    users = relationship(Users, backref="params")
-
-
-class Profiles(Base):  # найденные профили в разрезе параметров поиска
+class Profiles(Base):  # просмотренные профили
     __tablename__ = "profiles"
 
     id = sq.Column(sq.Integer, primary_key=True)
@@ -41,11 +27,9 @@ class Profiles(Base):  # найденные профили в разрезе п�
     can_access_closed = sq.Column(sq.Boolean)
     is_closed = sq.Column(sq.Boolean)
     favorite = sq.Column(sq.Boolean,  default=False)
-    blacklist = sq.Column(sq.Boolean, default=False)
+    id_user = sq.Column(sq.Integer, sq.ForeignKey("users.id"), nullable=False)
 
-    param_id = sq.Column(sq.Integer, sq.ForeignKey("params.param_id"), primary_key=True)
-
-    params = relationship(Params, backref="profiles")
+    user = relationship(Users, backref="users")
 
 
 def create_tables(engine):  # создание новых таблиц в БД
